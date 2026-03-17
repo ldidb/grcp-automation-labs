@@ -10,8 +10,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -80,
-        0
+        -544,
+        225.69806199122422
       ],
       "id": "d079e4e9-23df-435b-b4b4-3e450a214839",
       "name": "Webhook",
@@ -173,14 +173,14 @@
           ]
         },
         "options": {
-          "fallbackOutput": "none"
+          "fallbackOutput": "extra"
         }
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        176,
-        -64
+        -320,
+        145.69806199122422
       ],
       "id": "f94ef253-b592-4a33-bd51-4dfeceae11cb",
       "name": "Switch"
@@ -287,8 +287,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        384,
-        -128
+        -96,
+        -158.30193800877578
       ],
       "id": "e5754927-d834-4dc8-ba80-9fc4af158a6c",
       "name": "Append row in sheet",
@@ -310,12 +310,257 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        592,
-        -128
+        128,
+        -158.30193800877578
       ],
       "id": "a845a9cd-b706-46d4-8698-501e7056c5c0",
       "name": "Send a message",
       "webhookId": "bf045093-3e4e-4b74-9846-79919b4840f2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "EQv3CjZ3yAncmJ11",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 23,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        352,
+        -158.30193800877578
+      ],
+      "id": "de0ee1c0-d2ff-4e15-84c0-a78cbb1b1f18",
+      "name": "Wait",
+      "webhookId": "19a13da6-24c8-46d1-95cb-94d5496f3153"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1-bH33_ZHB7AMam7gCU7KZp4ncNa9mud6g1C4nG3fIwM",
+          "mode": "list",
+          "cachedResultName": "DSAR Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-bH33_ZHB7AMam7gCU7KZp4ncNa9mud6g1C4nG3fIwM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-bH33_ZHB7AMam7gCU7KZp4ncNa9mud6g1C4nG3fIwM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $('Webhook').item.json.body.email }}",
+            "Status": "Due Soon"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Request type",
+              "displayName": "Request type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Date received",
+              "displayName": "Date received",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Regulation",
+              "displayName": "Regulation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        576,
+        -158.30193800877578
+      ],
+      "id": "51c80369-bfd3-4b28-8ca3-a7a18b9db390",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gyAd7hJZid1Jv1Ac",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "privacy@company.com",
+        "subject": "⚠️ DSAR Due in 7 Days - Action Required",
+        "message": "=Hi Privacy Team,  \nThis is an automated reminder that the following DSAR request is due in 7 days.  Request Details: - Name: {{ $('Webhook').item.json.body.first_name }} {{ $('Webhook').item.json.body.last_name }} - Email: {{ $('Webhook').item.json.body.email }} - Request Type: {{ $('Webhook').item.json.body.request_type }} - Regulation: {{ $('Webhook').item.json.body.regulation }} - Date Received: {{ $('Webhook').item.json.body.submitted_at }}  Please ensure this request is completed before the 30 day deadline.  This is an automated message from the DSAR Management System.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        -158.30193800877578
+      ],
+      "id": "2d2912f5-d0eb-402e-b6cd-36da26d5eadc",
+      "name": "Send a message1",
+      "webhookId": "ee02f95e-a6c6-4503-8f8b-e3b050a65225",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "EQv3CjZ3yAncmJ11",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        -350.3019380087758
+      ],
+      "id": "61e98317-b41b-44b6-9107-5bb09db73dae",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        225.69806199122422
+      ],
+      "id": "c189361b-837a-4b41-bc38-f8c2d00bfc0a",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        33.69806199122422
+      ],
+      "id": "9bf35897-08e5-4ce0-bb38-24478432cb67",
+      "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        609.6980619912242
+      ],
+      "id": "8f0a7940-c578-4c3c-b13d-97c58f3d5499",
+      "name": "No Operation, do nothing3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        801.6980619912242
+      ],
+      "id": "55b7b6d8-66f5-4562-bbbb-f324edbdf6a7",
+      "name": "No Operation, do nothing4"
+    },
+    {
+      "parameters": {
+        "sendTo": "privacy@company.com",
+        "subject": "⚠️ Unrecognized DSAR Request - Manual Review Required",
+        "message": "=Hi Privacy Team,  An unrecognized DSAR request type was received that could not be automatically routed. Manual review is required.  Request Details: - Name: {{ $('Webhook').item.json.body.first_name }} {{ $('Webhook').item.json.body.last_name }} - Email: {{ $('Webhook').item.json.body.email }} - Request Type: {{ $('Webhook').item.json.body.request_type }} - Regulation: {{ $('Webhook').item.json.body.regulation }} - Date Received: {{ $('Webhook').item.json.body.submitted_at }}  Please review and action this request manually.  This is an automated message from the DSAR Management System.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        417.6980619912242
+      ],
+      "id": "f36a6f97-4ebc-4e25-b636-c86305d34a61",
+      "name": "Send a message2",
+      "webhookId": "162b8354-f63a-44b3-ab61-2e30f085c441",
       "credentials": {
         "gmailOAuth2": {
           "id": "EQv3CjZ3yAncmJ11",
@@ -345,6 +590,48 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -358,6 +645,39 @@
           }
         ]
       ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -366,7 +686,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "bcdbd1d1-3813-4e50-abf4-76af52604645",
+  "versionId": "b448e93d-67d9-4bf6-9741-9fff9277346d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "c80fbbdc6b8555a8e255c7befbebd222559c0b62b606827d352820a2cfea6c5b"
