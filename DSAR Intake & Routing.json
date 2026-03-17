@@ -1,0 +1,376 @@
+{
+  "name": "DSAR Intake & Routing",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dsar-intake",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "d079e4e9-23df-435b-b4b4-3e450a214839",
+      "name": "Webhook",
+      "webhookId": "ca7eaf24-260b-4190-8a93-bb972ffb6972"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.request_type }}",
+                    "rightValue": "deletion",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b9598a45-e96e-4007-a2f6-e428fd342a2a"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "deletion"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2562441f-9d67-44af-b689-a4d0ea84a74c",
+                    "leftValue": "={{ $json.body.request_type }}",
+                    "rightValue": "access",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "access"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4e009574-f461-4bb0-a550-6836b202826c",
+                    "leftValue": "={{ $json.body.request_type }}",
+                    "rightValue": "correction",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "correction"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6a147d5d-6900-4e2d-9d8b-204fbf413ab9",
+                    "leftValue": "={{ $json.body.request_type }}",
+                    "rightValue": "portability",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "portability"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e51ff6a1-9852-45ba-ad26-a70da1c7b31f",
+                    "leftValue": "={{ $json.body.request_type }}",
+                    "rightValue": "objection",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "objection"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "40b4d1ec-e582-4a4d-8e50-b42ecc9e63f4",
+                    "leftValue": "={{ $json.body.request_type }}",
+                    "rightValue": "restriction",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "restriction"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        -64
+      ],
+      "id": "f94ef253-b592-4a33-bd51-4dfeceae11cb",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-bH33_ZHB7AMam7gCU7KZp4ncNa9mud6g1C4nG3fIwM",
+          "mode": "list",
+          "cachedResultName": "DSAR Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-bH33_ZHB7AMam7gCU7KZp4ncNa9mud6g1C4nG3fIwM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-bH33_ZHB7AMam7gCU7KZp4ncNa9mud6g1C4nG3fIwM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "First Name": "={{ $json.body.first_name }}",
+            "Last Name": "={{ $json.body.last_name }}",
+            "Email": "={{ $json.body.email }}",
+            "Request type": "={{ $json.body.request_type }}",
+            "Date received": "={{ $json.body.submitted_at }}",
+            "Regulation": "={{ $json.body.regulation }}",
+            "Status": "Open"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Request type",
+              "displayName": "Request type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date received",
+              "displayName": "Date received",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Regulation",
+              "displayName": "Regulation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        384,
+        -128
+      ],
+      "id": "e5754927-d834-4dc8-ba80-9fc4af158a6c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gyAd7hJZid1Jv1Ac",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Webhook').item.json.body.email }}",
+        "subject": "=Your Privacy Request Has Been Received",
+        "emailType": "text",
+        "message": "=Dear {{ $('Webhook').item.json.body.first_name }} {{ $('Webhook').item.json.body.last_name }},\n\nThank you for submitting your privacy request. We have received your {{ $('Webhook').item.json.body.request_type }} request and will process it in accordance with {{ $('Webhook').item.json.body.regulation }} requirements.\n\nPlease note that we are required to respond within 30 days of receiving your request.\n\nYour request details:\n- Request Type: {{ $('Webhook').item.json.body.request_type }}\n- Date Received: {{ $('Webhook').item.json.body.submitted_at }}\n- Reference: {{ $execution.id }}\n\nIf you have any questions, please reply to this email.\n\nKind regards,\nPrivacy Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        -128
+      ],
+      "id": "a845a9cd-b706-46d4-8698-501e7056c5c0",
+      "name": "Send a message",
+      "webhookId": "bf045093-3e4e-4b74-9846-79919b4840f2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "EQv3CjZ3yAncmJ11",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "bcdbd1d1-3813-4e50-abf4-76af52604645",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c80fbbdc6b8555a8e255c7befbebd222559c0b62b606827d352820a2cfea6c5b"
+  },
+  "id": "Xmo2VjTeYnMT9Qwp",
+  "tags": []
+}
