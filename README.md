@@ -14,6 +14,8 @@ Simulates an enterprise DSAR intake pipeline triggered by a webhook
 - Switch node routing for all 6 GDPR data subject rights
 - Automatic logging to Google Sheets DSAR tracker
 - Automated confirmation email to requestor
+- 23-day deadline reminder with automatic Google Sheets status update
+- Fallback alert for unrecognized request types ensuring no request is ever lost
 
 **GDPR Rights Covered:**
 - Right to Deletion (Article 17)
