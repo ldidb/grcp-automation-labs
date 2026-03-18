@@ -1,0 +1,671 @@
+{
+  "name": "DPIA Intake & Risk Scoring",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Privacy Review Intake Form",
+        "formDescription": "Please complete this form before launching any new feature or product change. \nThis information will be used to assess privacy risk and determine if a full \nData Protection Impact Assessment (DPIA) is required.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Feature Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Description",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Does this feature collect personal data?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Yes"
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What types of data are collected",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Name"
+                  },
+                  {
+                    "option": "E-mail"
+                  },
+                  {
+                    "option": "Location"
+                  },
+                  {
+                    "option": "Health Data"
+                  },
+                  {
+                    "option": "FInancial Data"
+                  },
+                  {
+                    "option": "Biometric Data"
+                  },
+                  {
+                    "option": "Children's Data"
+                  },
+                  {
+                    "option": "None"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Is data shared with third parties?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Yes"
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Submitter Email",
+              "fieldType": "email",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        112
+      ],
+      "id": "7b270bae-55eb-468c-8bcd-44c95a105e1e",
+      "name": "On form submission",
+      "webhookId": "f3328f95-1fa8-4f55-91fa-31b5a3c2aeee"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.risk_level }}",
+                    "rightValue": "High",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "4f95d388-ec7b-4c05-9852-55f48aac39f5"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "High"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "7fb4d51d-7b90-400d-8870-60a7a528c6b0",
+                    "leftValue": "={{ $json.risk_level }}",
+                    "rightValue": "Medium",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Medium"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a3c511f9-f439-4870-ac9f-48203d0e0502",
+                    "leftValue": "={{ $json.risk_level }}",
+                    "rightValue": "Low",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Low"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Unknown"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        80
+      ],
+      "id": "0861872c-9fec-4789-a081-4c9cf2f2a107",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SwBJWTLbAvMfbCbMshMqBqlbSPWxFcoFPAVhY8wDApI",
+          "mode": "list",
+          "cachedResultName": "DPIA Risk Register",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SwBJWTLbAvMfbCbMshMqBqlbSPWxFcoFPAVhY8wDApI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SwBJWTLbAvMfbCbMshMqBqlbSPWxFcoFPAVhY8wDApI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Feature Name": "={{ $json.feature_name }}",
+            "Risk Score": "={{ $json.risk_score }}",
+            "Risk Level": "={{ $json.risk_level }}",
+            "Risk Factors": "={{ $json.risk_factors.join(\", \") }}",
+            "Submitter Email": "={{ $json.submitter_email }}",
+            "Date Submitted": "={{ $now }}",
+            "Status": "DPIA Required"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Feature Name",
+              "displayName": "Feature Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Score",
+              "displayName": "Risk Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Level",
+              "displayName": "Risk Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Factors",
+              "displayName": "Risk Factors",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Submitter Email",
+              "displayName": "Submitter Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date Submitted",
+              "displayName": "Date Submitted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        -176
+      ],
+      "id": "5701542b-34eb-435f-ad5b-296296dba34e",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gyAd7hJZid1Jv1Ac",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "privacy@company.com",
+        "subject": "=🚨 High Risk Feature - DPIA Required: {{ $json.feature_name }}",
+        "message": "=Hi Privacy Team,  \nA new feature has been submitted for privacy review and has been flagged as HIGH RISK. A full DPIA is required before this feature can be launched.  Feature Details: - Feature Name: {{ $json.feature_name }} - Risk Score: {{ $json.risk_score }}/100 - Risk Level: {{ $json.risk_level }} - Submitted By: {{ $json.submitter_email }} - Date Submitted: {{ $now }}  Risk Factors Identified: {{ $json.risk_factors.join(\"\\n- \") }}  Please initiate a full DPIA immediately and contact the submitter to discuss privacy requirements before development proceeds.  This is an automated message from the Privacy Review System.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        400
+      ],
+      "id": "177d2916-88de-485c-a41e-5ecb5cc16e74",
+      "name": "Send a message",
+      "webhookId": "5e663a75-3d07-4e38-9630-e3565123cd7c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "EQv3CjZ3yAncmJ11",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SwBJWTLbAvMfbCbMshMqBqlbSPWxFcoFPAVhY8wDApI",
+          "mode": "list",
+          "cachedResultName": "DPIA Risk Register",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SwBJWTLbAvMfbCbMshMqBqlbSPWxFcoFPAVhY8wDApI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SwBJWTLbAvMfbCbMshMqBqlbSPWxFcoFPAVhY8wDApI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Feature Name": "={{ $json.feature_name }}",
+            "Risk Score": "={{ $json.risk_score }}",
+            "Risk Level": "={{ $json.risk_level }}",
+            "Risk Factors": "={{ $json.risk_factors.join(\", \") }}",
+            "Submitter Email": "={{ $json.submitter_email }}",
+            "Date Submitted": "={{ $now }}",
+            "Status": "Standard PIA Required"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Feature Name",
+              "displayName": "Feature Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Score",
+              "displayName": "Risk Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Level",
+              "displayName": "Risk Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Factors",
+              "displayName": "Risk Factors",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Submitter Email",
+              "displayName": "Submitter Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date Submitted",
+              "displayName": "Date Submitted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        16
+      ],
+      "id": "f4f21f98-cdc0-4532-8162-4382406ca7e6",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gyAd7hJZid1Jv1Ac",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SwBJWTLbAvMfbCbMshMqBqlbSPWxFcoFPAVhY8wDApI",
+          "mode": "list",
+          "cachedResultName": "DPIA Risk Register",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SwBJWTLbAvMfbCbMshMqBqlbSPWxFcoFPAVhY8wDApI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SwBJWTLbAvMfbCbMshMqBqlbSPWxFcoFPAVhY8wDApI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Feature Name": "={{ $json.feature_name }}",
+            "Risk Score": "={{ $json.risk_score }}",
+            "Risk Level": "={{ $json.risk_level }}",
+            "Risk Factors": "={{ $json.risk_factors.join(\", \") }}",
+            "Submitter Email": "={{ $json.submitter_email }}",
+            "Date Submitted": "={{ $now }}",
+            "Status": "Low Risk - No Review Required"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Feature Name",
+              "displayName": "Feature Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Score",
+              "displayName": "Risk Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Level",
+              "displayName": "Risk Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Risk Factors",
+              "displayName": "Risk Factors",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Submitter Email",
+              "displayName": "Submitter Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date Submitted",
+              "displayName": "Date Submitted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        208
+      ],
+      "id": "cea09134-1281-4262-b374-1446ec0fe098",
+      "name": "Append row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gyAd7hJZid1Jv1Ac",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "privacy@company.com",
+        "subject": "=⚠️ Medium Risk Feature - PIA Required: {{ $json.feature_name }}",
+        "message": "=Hi Privacy Team,\n\nA new feature has been submitted for privacy review and has been flagged as MEDIUM RISK. A standard Privacy Impact Assessment (PIA) is required before this feature can be launched.\n\nFeature Details:\n- Feature Name: {{ $json.feature_name }}\n- Risk Score: {{ $json.risk_score }}/100\n- Risk Level: {{ $json.risk_level }}\n- Submitted By: {{ $json.submitter_email }}\n- Date Submitted: {{ $now }}\n\nRisk Factors Identified:\n{{ $json.risk_factors }}\n\nPlease schedule a standard PIA review with the submitter at your earliest convenience.\n\nThis is an automated message from the Privacy Review System.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        128
+      ],
+      "id": "be305bc1-032f-43eb-9ce3-07df38107c76",
+      "name": "Send a message1",
+      "webhookId": "5e663a75-3d07-4e38-9630-e3565123cd7c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "EQv3CjZ3yAncmJ11",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# Get form data from first item\ndata = _items[0][\"json\"]\n\n# Start with zero risk score\nrisk_score = 0\nrisk_factors = []\n\n# Check if personal data is collected\nif data.get(\"Does this feature collect personal data?\") == \"Yes\":\n    risk_score += 10\n    risk_factors.append(\"Collects personal data\")\n\n# Check data types collected\nsensitive_data_types = [\"Health Data\", \"Financial Data\", \"Biometric Data\", \"Children's Data\"]\ncollected_types = data.get(\"What types of data are collected\", [])\n\nfor data_type in sensitive_data_types:\n    if data_type in collected_types:\n        risk_score += 20\n        risk_factors.append(\"Collects \" + data_type + \" (special category)\")\n\nif \"Location\" in collected_types:\n    risk_score += 15\n    risk_factors.append(\"Collects location data\")\n\n# Check third party sharing\nif data.get(\"Is data shared with third parties?\") == \"Yes\":\n    risk_score += 20\n    risk_factors.append(\"Data shared with third parties\")\n\n# Determine risk level\nif risk_score >= 40:\n    risk_level = \"High\"\nelif risk_score >= 20:\n    risk_level = \"Medium\"\nelse:\n    risk_level = \"Low\"\n\nreturn [{\"json\": {\"feature_name\": data.get(\"Feature Name\"), \"submitter_email\": data.get(\"Submitter Email\"), \"risk_score\": risk_score, \"risk_level\": risk_level, \"risk_factors\": risk_factors}}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        112
+      ],
+      "id": "7c5f3b74-61f2-407b-9d16-4c154f7e7db3",
+      "name": "Privacy Risk Scoring"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Privacy Risk Scoring",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Privacy Risk Scoring": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "601fed12-4cd3-4bb3-bd43-25f5719ae26f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c80fbbdc6b8555a8e255c7befbebd222559c0b62b606827d352820a2cfea6c5b"
+  },
+  "id": "QfoVz5xYTxfd4574",
+  "tags": []
+}
